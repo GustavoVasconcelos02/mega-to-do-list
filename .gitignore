@@ -138,3 +138,9 @@ dist
 # packges.json
 package-lock.json
 package.json
+
+## TypeScript configs
+tsconfig.json
+
+## environment variable
+.env

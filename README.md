@@ -35,4 +35,14 @@ npm install express
 npm install -D typescript ts-node-dev @types/node @types/express
 ```
 
+**5. Crie o arquivo de configuração do TypeScript**
+```
+npx tsc --init
+```
+
+**6. Acesse o diretório e inicie o app**
+```
+cd ./src
+npm run dev
+```
 ---

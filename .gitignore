@@ -142,5 +142,8 @@ package.json
 ## TypeScript configs
 tsconfig.json
 
-## environment variable
+## environment variables
 .env
+
+# Ignore Prisma generated client
+/src/generated

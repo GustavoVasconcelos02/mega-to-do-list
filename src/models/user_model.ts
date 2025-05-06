@@ -1,7 +1,11 @@
-// Esta interface representa o modelo de dados de um usuário dentro da lógica da aplicação.
-// Ela é usada para definir a estrutura esperada dos dados do usuário, 
-// sem depender diretamente do Prisma ou do banco de dados.
+// Molde de dados que a função createUser vai receber
+export interface UserDTO {
+    name: string;
+    email: string;
+    password: string;
+}
 
+// Representa como um usuário criado é retornado pelo banco
 export interface User {
     id: string;
     name: string | null;

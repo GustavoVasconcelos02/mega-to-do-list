@@ -25,7 +25,7 @@ export async function getAllTasks(): Promise<Tasks[]>{
   }
 }
 
-export async function getTaskById (id: number): Promise<Tasks | null> {
+export async function getTaskById (id: string): Promise<Tasks | null> {
     try {
       const task = await prisma.tasks.findUnique({
         where: { id },
@@ -39,7 +39,7 @@ export async function getTaskById (id: number): Promise<Tasks | null> {
     }
 }
 
-export async function updateTask(id: number, data: Partial<CreateTaskDTO>): Promise<Tasks>{
+export async function updateTask(id: string, data: Partial<CreateTaskDTO>): Promise<Tasks>{
   try {
     const updated = await prisma.tasks.update({
       where: { id },
@@ -54,7 +54,7 @@ export async function updateTask(id: number, data: Partial<CreateTaskDTO>): Prom
   }
 }
 
-export async function deleteTask(id:number): Promise<Tasks> {
+export async function deleteTask(id:string): Promise<Tasks> {
   try {
     const deleted = await prisma.tasks.delete({
       where: { id },

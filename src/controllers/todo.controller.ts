@@ -11,7 +11,7 @@ import {
 import { CreateTaskDTO } from '../models/task_model';
 
 export const todoController = {
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<any> {
     try {
       const { title, description, completed, user_id } = req.body;
 
@@ -27,7 +27,7 @@ export const todoController = {
     }
   },
 
-  async getById(req: Request, res: Response) {
+  async getById(req: Request, res: Response): Promise<any> {
     try {
       const taskId = req.params.id;
       const task = await getTaskById(taskId);

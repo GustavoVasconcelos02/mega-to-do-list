@@ -27,7 +27,7 @@ export const todoController = {
     }
   },
 
-  async getById(req: Request, res: Response): Promise<any> {
+  async getById(req: Request, res: Response):Promise <any> {
     try {
       const taskId = req.params.id;
       const task = await getTaskById(taskId);

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUserDAO } from '../DAO/user.dao';
+import { createUserDAO } from '../repositories/user_repository';
 
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;

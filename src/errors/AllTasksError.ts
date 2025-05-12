@@ -1,5 +1,7 @@
-export class AllTasksError extends Error{
+import { CustomError } from "./CustomError";    
+
+export class AllTasksError extends CustomError{
     constructor(message = "Erro ao buscar tarefas.") {
-        super(message);
+        super(message, 500);
     }
 } 

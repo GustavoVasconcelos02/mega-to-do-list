@@ -1,4 +1,4 @@
-//controla o fluxo entra a requisição http e a logica do todo
+//controla o fluxo entre a requisição http e a logica do todo
 
 import { Request, Response } from 'express';
 import {

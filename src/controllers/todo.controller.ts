@@ -1,82 +1,57 @@
-//controla o fluxo entre a requisição http e a logica do todo
+//lida com req e res http
 
 import { Request, Response } from 'express';
-import {
-  createTask,
-  getAllTasks,
-  getTaskById,
-  updateTask,
-  deleteTask
-} from '../repositories/task_repository';
+import { taskService } from '../services/todo.services';
 import { CreateTaskDTO } from '../models/task_model';
 
 export const todoController = {
-  async create(req: Request, res: Response): Promise<any> {
+  async create(req: Request, res: Response): Promise<void> {
     try {
-      const { title, description, completed, user_id } = req.body;
-
-      if (!title || typeof completed !== 'boolean') {
-        return res.status(400).json({ error: 'Título e status são obrigatórios' });
-      }
-
-      const newTask = await createTask({ title, description, completed, user_id });
+      const taskData: CreateTaskDTO = req.body;
+      const newTask = await taskService.createTask(taskData);
       res.status(201).json(newTask);
-    } catch (error) {
-      console.error('Erro ao criar tarefa:', error);
-      res.status(500).json({ error: 'Erro ao criar tarefa' });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({ error: error.message });
     }
   },
 
-  async getById(req: Request, res: Response):Promise <any> {
+  async getById(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
-      const task = await getTaskById(taskId);
-
-      if (!task) {
-        return res.status(404).json({ error: 'Tarefa não encontrada' });
-      }
-
+      const task = await taskService.getTaskById(taskId);
       res.status(200).json(task);
-    } catch (error) {
-      console.error('Erro ao buscar tarefa:', error);
-      res.status(500).json({ error: 'Erro ao buscar tarefa' });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({ error: error.message });
     }
   },
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
-      const { title, description, completed, user_id } = req.body;
-
-      const updatedData: Partial<CreateTaskDTO> = { title, description, completed, user_id };
-      const updatedTask = await updateTask(taskId, updatedData);
-
+      const taskData: Partial<CreateTaskDTO> = req.body;
+      const updatedTask = await taskService.updateTask(taskId, taskData);
       res.status(200).json(updatedTask);
-    } catch (error) {
-      console.error('Erro ao atualizar tarefa:', error);
-      res.status(500).json({ error: 'Erro ao atualizar tarefa' });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({ error: error.message });
     }
   },
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
-      const deletedTask = await deleteTask(taskId);
-
+      const deletedTask = await taskService.deleteTask(taskId);
       res.status(200).json(deletedTask);
-    } catch (error) {
-      console.error('Erro ao deletar tarefa:', error);
-      res.status(500).json({ error: 'Erro ao deletar tarefa' });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({ error: error.message });
     }
   },
 
-  async getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const tasks = await getAllTasks();
+      const tasks = await taskService.getAllTasks();
       res.status(200).json(tasks);
-    } catch (error) {
-      console.error('Erro ao buscar tarefas:', error);
-      res.status(500).json({ error: 'Erro ao buscar tarefas' });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({ error: error.message });
     }
   },
 };

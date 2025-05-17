@@ -1,7 +1,7 @@
 // src/routes/todo.routes.ts
 
 import { Router } from 'express';
-import { todoController } from '../controllers/todo.controller';
+import { todoController } from '../controllers/crud_controller';
 
 const router = Router();
 

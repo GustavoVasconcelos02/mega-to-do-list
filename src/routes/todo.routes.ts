@@ -5,10 +5,10 @@ import { todoController } from '../controllers/todo.controller';
 
 const router = Router();
 
-router.post('/tasks', todoController.create);
-router.get('/tasks/:id', todoController.getById);
-router.put('/tasks/:id', todoController.update);
-router.delete('/tasks/:id', todoController.delete);
-router.get('/tasks', todoController.getAll);
+router.post('/tasks', todoController.createTask);
+router.get('/tasks/:id', todoController.getTaskById);
+router.put('/tasks/:id', todoController.updateTask);
+router.delete('/tasks/:id', todoController.deleteTask);
+router.get('/tasks', todoController.getAllTask);
 
 export default router;

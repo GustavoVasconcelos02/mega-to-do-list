@@ -6,7 +6,7 @@ import { DeleteTaskError } from '../errors/DeleteTaskError';
 import { NoDescriptionError } from '../errors/NoDescriptionError';
 import { NoTitleError } from '../errors/NoTitleError';
 import { UpdateTaskError } from '../errors/UpdateTaskError';
-import { CreateTasksError } from '../errors/CreateTaskError';
+import { CreateTaskError } from '../errors/CreateTaskError';
 
 export const taskService = {
   async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
@@ -20,7 +20,7 @@ export const taskService = {
       if (error instanceof NoTitleError || error instanceof NoDescriptionError) {
         throw error;
       }
-      throw new CreateTasksError('Erro ao criar tarefa. Verifique os dados enviados e tente novamente.');
+      throw new CreateTaskError('Erro ao criar tarefa. Verifique os dados enviados e tente novamente.');
     }
   },
 

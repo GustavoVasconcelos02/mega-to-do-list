@@ -14,7 +14,6 @@ export const createTaskSchema = z.object({
 });
 
 export const todoController = {
-
   // validacao da criacao de tarefas
   async createTask(req: Request, res: Response): Promise<any> {
     // valida o corpo da requisição (req.body) com base no esquema definido em createTaskSchema

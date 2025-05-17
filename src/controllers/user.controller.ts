@@ -11,4 +11,4 @@ export const createUser = async (req: Request, res: Response) => {
     console.error('Erro ao criar usuário:', error);
     res.status(400).json({ error: 'Erro ao criar usuário. Verifique os dados e tente novamente.' });
   }
-}
+};

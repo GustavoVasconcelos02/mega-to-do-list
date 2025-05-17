@@ -148,5 +148,5 @@ tsconfig.json
 # Ignore Prisma generated client
 /src/generated
 
-# Ignore prisma migration
+# Ignore Prisma migrations
 /prisma/migrations

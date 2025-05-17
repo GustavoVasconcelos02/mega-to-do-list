@@ -1,15 +1,11 @@
 import { Request, Response } from 'express';
-import prisma from '../utils/prisma_client';
-
+import { createUserDAO } from '../repositories/user_repository';
 
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   try {
-    const newUser = await prisma.users.create({
-      data: { name, email, password },
-    });
-
+    const newUser = await createUserDAO(name, email, password);
     res.status(201).json(newUser);
   } catch (error: any) {
     console.error('Erro ao criar usuário:', error);

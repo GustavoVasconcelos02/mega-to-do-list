@@ -25,13 +25,19 @@ export const taskService = {
     }
   },
   //retorna as tarefas armazenadas no banco de dados e trata erros relacionados
-  async getAllTasks(): Promise<Tasks[]> {
+  async getAllTasks(page: number = 1, limit: number = 10, sortBy: string = 'createdAt', sortOrder: 'asc' | 'desc' = 'asc'): Promise<Tasks[]> {
     try {
-      const tasks = await prisma.tasks.findMany();
+      const tasks = await prisma.tasks.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: {
+          [sortBy]: sortOrder,
+        },
+      });
       return tasks;
     } catch (error) {
       console.error('Erro ao buscar tarefas:', error);
-      throw new AllTasksError();
+      throw new Error('Erro ao buscar todas as tarefas.');
     }
   },
   //retorna a tarefa armazenada no banco de dados de acordo com o id procurado e trata os erros relacionados 

@@ -5,6 +5,8 @@ import { taskService } from '../services/todo.services';
 import { CreateTaskDTO } from '../models/task_model';
 
 export const todoController = {
+
+  // validacao de dados e lida com response e request http da criacao de tarefas
   async create(req: Request, res: Response): Promise<void> {
     try {
       const taskData: CreateTaskDTO = req.body;
@@ -15,6 +17,7 @@ export const todoController = {
     }
   },
 
+    // validacao de dados e lida com response e request http da procura de tarefas por id
   async getById(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
@@ -25,6 +28,7 @@ export const todoController = {
     }
   },
 
+    // validacao de dados e lida com response e request http da atualizacao de tarefas
   async update(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
@@ -36,6 +40,7 @@ export const todoController = {
     }
   },
 
+    // validacao de dados e lida com response e request http da exclusao de tarefas 
   async delete(req: Request, res: Response): Promise<void> {
     try {
       const taskId = req.params.id;
@@ -46,6 +51,7 @@ export const todoController = {
     }
   },
 
+    // lida com response e request http da listagem de tarefas 
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const tasks = await taskService.getAllTasks();

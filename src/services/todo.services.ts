@@ -9,6 +9,7 @@ import { UpdateTaskError } from '../errors/UpdateTaskError';
 import { CreateTaskError } from '../errors/CreateTaskError';
 
 export const taskService = {
+  //validacao de dados e tratamento de errors da criacao de tarefas
   async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
     try {
       if (!taskData.title) throw new NoTitleError();
@@ -23,7 +24,7 @@ export const taskService = {
       throw new CreateTaskError('Erro ao criar tarefa. Verifique os dados enviados e tente novamente.');
     }
   },
-
+  //retorna as tarefas armazenadas no banco de dados e trata erros relacionados
   async getAllTasks(): Promise<Tasks[]> {
     try {
       const tasks = await prisma.tasks.findMany();
@@ -33,7 +34,7 @@ export const taskService = {
       throw new AllTasksError();
     }
   },
-
+  //retorna a tarefa armazenada no banco de dados de acordo com o id procurado e trata os erros relacionados 
   async getTaskById(id: string): Promise<Tasks | null> {
     try {
       const task = await prisma.tasks.findUnique({ where: { id } });
@@ -46,7 +47,7 @@ export const taskService = {
       throw new AllTasksError(`Erro ao buscar tarefa com ID ${id}`);
     }
   },
-
+  //valida os dados, atualiza uma tarefa ja existente no banco de dados e trata os erros relacionados
   async updateTask(id: string, taskData: Partial<CreateTaskDTO>): Promise<Tasks> {
     try {
       // Permite updates parciais, mas evita atualizações vazias
@@ -68,7 +69,7 @@ export const taskService = {
       throw new UpdateTaskError(`Erro ao atualizar tarefa com ID ${id}`);
     }
   },
-
+  //deleta uma tarefa existente no banco de dados e trata os erros relacionados
   async deleteTask(id: string): Promise<Tasks> {
     try {
       const deletedTask = await prisma.tasks.delete({ where: { id } });

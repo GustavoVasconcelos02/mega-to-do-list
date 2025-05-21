@@ -2,8 +2,8 @@
 export interface CreateTaskDTO {
     title: string;
     description?: string;
-    date?: Date;
-    priority?: string;
+    scheduled_for?: Date;
+    priority?: number;
     completed?: boolean;
     user_id: string;
   }
@@ -13,8 +13,8 @@ export interface Tasks {
     id: string;
     title: string;
     description?: string | null;
-    date?: Date | null;
-    priority?: string | null;
+    scheduled_for?: Date | null;
+    priority?: number | null;
     completed: boolean | null;
     user_id: string;
     created_at: Date | null;

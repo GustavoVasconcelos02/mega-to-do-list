@@ -1,11 +1,10 @@
-// lida com o banco de dados
-
 import prisma from '../utils/prisma_client';
 import { CreateTaskDTO, Tasks } from '../models/task_model';
 
 export const taskRepository = {
+
   // inserir tarefa nova no banco de dados
-  create: async (taskData: CreateTaskDTO): Promise<Tasks> => {
+  async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
     try {
       return await prisma.tasks.create({ data: taskData });
     } catch (error) {
@@ -15,7 +14,7 @@ export const taskRepository = {
   },
 
   // recupera todas as tarefas armazenadas no banco de dados
-  findAll: async (): Promise<Tasks[]> => {
+  async getAllTasks(): Promise<Tasks[]> {
     try {
       return await prisma.tasks.findMany();
     } catch (error) {
@@ -25,7 +24,7 @@ export const taskRepository = {
   },
 
   // recupera uma tarefa armazenada no banco de dados pelo seu id
-  findById: async (id: string): Promise<Tasks | null> => {
+  async getTasksById(id: string): Promise<Tasks | null> {
     try {
       return await prisma.tasks.findUnique({ where: { id } });
     } catch (error) {
@@ -35,7 +34,7 @@ export const taskRepository = {
   },
 
   // atualiza uma tarefa já existente no banco de dados
-  update: async (id: string, data: Partial<CreateTaskDTO>): Promise<Tasks> => {
+  async updateTasks(id: string, data: Partial<CreateTaskDTO>): Promise<Tasks> {
     try {
       return await prisma.tasks.update({ where: { id }, data });
     } catch (error) {
@@ -45,7 +44,7 @@ export const taskRepository = {
   },
 
   // deleta uma tarefa existente no banco de dados
-  delete: async (id: string): Promise<Tasks> => {
+  async deleteTasks(id: string): Promise<Tasks> {
     try {
       return await prisma.tasks.delete({ where: { id } });
     } catch (error) {

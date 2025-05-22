@@ -1,6 +1,6 @@
 //lida com req e res http
 import { Request, Response } from 'express';
-import { taskService } from '../services/todo.services';
+import { taskService } from '../services/crud_services';
 import { z } from 'zod';
 
 
@@ -8,7 +8,7 @@ export const createTaskSchema = z.object({
   title: z.string().min(3, { message: 'Titulo deve ter pelo menos 3 caracteres'}),
   description: z.string().min(10, { message: "Descrição deve ter pelo menos 10 caracteres"}).optional(),
   date: z.date().optional(),
-  priority: z.enum (["baixa", "media", "alta"]).optional(),
+  priority: z.number().min(1).max(3).optional(),
   completed: z.boolean().optional(),
   user_id: z.string().uuid({ message: "ID de usuario invalido"})
 });

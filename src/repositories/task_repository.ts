@@ -2,54 +2,101 @@ import prisma from '../utils/prisma_client';
 import { CreateTaskDTO, Tasks } from '../models/task_model';
 
 export const taskRepository = {
-
-  // inserir tarefa nova no banco de dados
+  // Cria uma nova tarefa no banco de dados
   async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
     try {
       return await prisma.tasks.create({ data: taskData });
     } catch (error) {
       console.error("Erro ao criar tarefa:", error);
-      throw new Error("Erro ao criar tarefa. Verifique os dados e tente novamente.");
+      throw new Error("Erro ao criar tarefa no banco de dados.");
     }
   },
 
-  // recupera todas as tarefas armazenadas no banco de dados
-  async getAllTasks(): Promise<Tasks[]> {
-    try {
-      return await prisma.tasks.findMany();
-    } catch (error) {
-      console.error("Erro ao buscar tarefas:", error);
-      throw new Error("Erro ao buscar tarefas. Tente novamente mais tarde.");
-    }
-  },
-
-  // recupera uma tarefa armazenada no banco de dados pelo seu id
-  async getTasksById(id: string): Promise<Tasks | null> {
+  // Busca uma tarefa pelo ID
+  async getTaskById(id: string): Promise<Tasks | null> {
     try {
       return await prisma.tasks.findUnique({ where: { id } });
     } catch (error) {
-      console.error("Erro ao buscar tarefa por ID:", error);
-      throw new Error("Erro ao buscar tarefa. Verifique o ID informado.");
+      console.error(`Erro ao buscar tarefa com ID ${id}:`, error);
+      throw new Error("Erro ao buscar tarefa no banco de dados.");
     }
   },
 
-  // atualiza uma tarefa já existente no banco de dados
-  async updateTasks(id: string, data: Partial<CreateTaskDTO>): Promise<Tasks> {
+  // Retorna todas as tarefas com paginação e ordenação padrão
+  async getAllTask(userId: string, page = 1, limit = 10): Promise<Tasks[]> {
+  const skip = (page - 1) * limit;
+  try {
+    return await prisma.tasks.findMany({
+      where: { user_id: userId },
+      skip,
+      take: limit,
+      orderBy: [
+        { completed: 'asc' },
+        { priority: 'desc' },
+        { scheduled_for: 'asc' },
+      ],
+    });
+  } catch (error) {
+    console.error("Erro ao buscar todas as tarefas:", error);
+    throw new Error("Erro ao buscar tarefas no banco de dados.");
+    }
+  },
+
+  // Retorna as tarefas com base nos filtros selecionados
+  async filterTask(
+    userId: string,
+    searchTitle?: string,
+    filterBy?: string,
+    filterOrder: 'asc' | 'desc' = 'asc',
+    page = 1,
+    limit = 10
+  ): Promise<Tasks[]> {
+    const skip = (page - 1) * limit;
+    const whereClause = {
+      user_id: userId,
+      ...(searchTitle && {
+        title: {
+          contains: searchTitle,
+          mode: 'insensitive' as const,
+        }
+      })
+    };
+
+    const orderByClause = filterBy ? [{ [filterBy]: filterOrder }] : [];
+
     try {
-      return await prisma.tasks.update({ where: { id }, data });
+      return await prisma.tasks.findMany({
+        where: whereClause,
+        skip,
+        take: limit,
+        orderBy: orderByClause,
+      });
     } catch (error) {
-      console.error("Erro ao atualizar tarefa:", error);
-      throw new Error("Erro ao atualizar tarefa. Verifique os dados informados.");
+      console.error("Erro ao filtrar tarefas:", error);
+      throw new Error("Erro ao aplicar filtros nas tarefas.");
     }
   },
 
-  // deleta uma tarefa existente no banco de dados
-  async deleteTasks(id: string): Promise<Tasks> {
+  // Atualiza os dados de uma tarefa existente
+  async updateTask(id: string, taskData: Partial<CreateTaskDTO>): Promise<Tasks> {
+    try {
+      return await prisma.tasks.update({
+        where: { id },
+        data: taskData,
+      });
+    } catch (error) {
+      console.error(`Erro ao atualizar tarefa com ID ${id}:`, error);
+      throw new Error("Erro ao atualizar tarefa no banco de dados.");
+    }
+  },
+
+  // Deleta uma tarefa existente pelo ID
+  async deleteTask(id: string): Promise<Tasks> {
     try {
       return await prisma.tasks.delete({ where: { id } });
     } catch (error) {
-      console.error("Erro ao deletar tarefa:", error);
-      throw new Error("Erro ao deletar tarefa. Verifique o ID informado.");
+      console.error(`Erro ao deletar tarefa com ID ${id}:`, error);
+      throw new Error("Erro ao deletar tarefa no banco de dados.");
     }
   },
 };

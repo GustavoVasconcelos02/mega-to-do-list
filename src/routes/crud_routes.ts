@@ -1,14 +1,13 @@
-// src/routes/todo.routes.ts
-
-import { Router } from 'express';
+import express from 'express';
 import { todoController } from '../controllers/crud_controller';
+import { authMiddleware } from '../middlewares/auth_middleware';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/tasks', todoController.createTask);
-router.get('/tasks/:id', todoController.getTaskById);
-router.put('/tasks/:id', todoController.updateTask);
-router.delete('/tasks/:id', todoController.deleteTask);
-router.get('/tasks', todoController.getAllTask);
+router.post('/tasks', authMiddleware, todoController.createTask);
+router.get('/tasks/:id', authMiddleware, todoController.getTaskById);
+router.get('/tasks', authMiddleware, todoController.getAllTasks);
+router.put('/tasks/:id', authMiddleware, todoController.updateTask);
+router.delete('/tasks/:id', authMiddleware, todoController.deleteTask);
 
 export default router;

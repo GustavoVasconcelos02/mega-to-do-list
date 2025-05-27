@@ -7,6 +7,7 @@ import { NoDescriptionError } from '../errors/NoDescriptionError';
 import { NoTitleError } from '../errors/NoTitleError';
 import { UpdateTaskError } from '../errors/UpdateTaskError';
 import { CreateTaskError } from '../errors/CreateTaskError';
+import { DeleteAllTasksError } from '../errors/DeleteAllCompleted';
 
 export const taskService = {
   //validacao de dados e tratamento de errors da criacao de tarefas
@@ -85,5 +86,15 @@ export const taskService = {
     } catch (error) {
       throw new DeleteTaskError(`Erro ao deletar tarefa com ID ${id}`);
     }
+  },
+   // Deleta todas as tarefas completas do sistema
+  async deleteAllCompletedTasksByUser(userId: string): Promise<number> {
+  try {
+    return await taskRepository.deleteAllCompletedTasksByUser(userId);
+  } catch (error) {
+    throw new DeleteAllTasksError(`Erro ao deletar tarefas completas do usuário.`);
   }
+}
+  
+  
 };

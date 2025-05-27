@@ -9,5 +9,7 @@ router.get('/tasks/:id', authMiddleware, todoController.getTaskById);
 router.get('/tasks', authMiddleware, todoController.getAllTasks);
 router.put('/tasks/:id', authMiddleware, todoController.updateTask);
 router.delete('/tasks/:id', authMiddleware, todoController.deleteTask);
+router.delete('/tasks/bulk/completed', authMiddleware, todoController.deleteAllCompletedTasks);
+
 
 export default router;

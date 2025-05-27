@@ -114,4 +114,21 @@ export const todoController = {
       res.status(404).json({ error: error.message || 'Erro ao deletar tarefa.' });
     }
   },
+
+ async deleteAllCompletedTasks(req: AuthenticatedRequest, res: Response): Promise<void> {
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({ error: 'Usuário não autenticado.' });
+    return;
+  }
+
+  try {
+    const deletedCount = await taskService.deleteAllCompletedTasksByUser(userId);
+    res.status(200).json({ message: `${deletedCount} tarefas completas foram deletadas.` });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Erro ao deletar tarefas completas.' });
+  }
+}
+
 };

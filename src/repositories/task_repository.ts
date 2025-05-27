@@ -99,4 +99,19 @@ export const taskRepository = {
       throw new Error("Erro ao deletar tarefa no banco de dados.");
     }
   },
+  // Deleta todas as tarefas marcadas como concluídas
+ async deleteAllCompletedTasksByUser(userId: string): Promise<number> {
+  try {
+    const result = await prisma.tasks.deleteMany({
+      where: {
+        user_id: userId,
+        completed: true,
+      },
+    });
+    return result.count;
+  } catch (error) {
+    console.error(`Erro ao deletar tarefas completas do usuário ${userId}:`, error);
+    throw new Error("Erro ao deletar tarefas completas no banco de dados.");
+  }
+}
 };

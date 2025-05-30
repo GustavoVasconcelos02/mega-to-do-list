@@ -8,6 +8,7 @@ import { NoTitleError } from '../errors/NoTitleError';
 import { UpdateTaskError } from '../errors/UpdateTaskError';
 import { CreateTaskError } from '../errors/CreateTaskError';
 import { DeleteAllTasksError } from '../errors/DeleteAllCompleted';
+import { taskStatus } from '../generated/prisma';
 
 export const taskService = {
   //validacao de dados e tratamento de errors da criacao de tarefas
@@ -16,7 +17,10 @@ export const taskService = {
       if (!taskData.title) throw new NoTitleError();
       if (!taskData.description) throw new NoDescriptionError();
 
-      return await taskRepository.createTask(taskData);
+      return await taskRepository.createTask({
+        ...taskData,
+      status: taskData.status || taskStatus.TODO,
+    });
     } catch (error) {
       if (error instanceof NoTitleError || error instanceof NoDescriptionError) throw error;
       throw new CreateTaskError('Erro ao criar tarefa. Verifique os dados enviados e tente novamente.');
@@ -64,7 +68,7 @@ export const taskService = {
         throw new NotFoundError(`Tarefa com ID ${id} não encontrada ou não pertence a você.`);
       }
 
-      if (!taskData.title && !taskData.description) {
+      if (!taskData.title && !taskData.description && taskData.status === undefined) {
         throw new UpdateTaskError('Forneça ao menos um campo para atualizar.');
       }
 
@@ -89,12 +93,10 @@ export const taskService = {
   },
    // Deleta todas as tarefas completas do sistema
   async deleteAllCompletedTasksByUser(userId: string): Promise<number> {
-  try {
-    return await taskRepository.deleteAllCompletedTasksByUser(userId);
-  } catch (error) {
-    throw new DeleteAllTasksError(`Erro ao deletar tarefas completas do usuário.`);
-  }
-}
-  
-  
+    try {
+      return await taskRepository.deleteAllCompletedTasksByUser(userId);
+    } catch (error) {
+      throw new DeleteAllTasksError(`Erro ao deletar tarefas completas do usuário.`);
+    }
+  },
 };

@@ -1,11 +1,18 @@
 import prisma from '../utils/prisma_client';
 import { CreateTaskDTO, Tasks } from '../models/task_model';
+import { taskStatus } from '../generated/prisma';
+
 
 export const taskRepository = {
   // Cria uma nova tarefa no banco de dados
   async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
     try {
-      return await prisma.tasks.create({ data: taskData });
+      return await prisma.tasks.create({ 
+        data: {
+          ... taskData, 
+          status: taskData.status || taskStatus.TODO,
+     },
+     });
     } catch (error) {
       console.error("Erro ao criar tarefa:", error);
       throw new Error("Erro ao criar tarefa no banco de dados.");
@@ -33,7 +40,7 @@ export const taskRepository = {
       orderBy: [
         { completed: 'asc' },
         { priority: 'desc' },
-        { scheduled_for: 'asc' },
+        {  start_date: 'asc'  },
       ],
     });
   } catch (error) {
@@ -82,7 +89,10 @@ export const taskRepository = {
     try {
       return await prisma.tasks.update({
         where: { id },
-        data: taskData,
+        data:{ 
+          ...taskData,
+        status: taskData.status || undefined,
+      },
       });
     } catch (error) {
       console.error(`Erro ao atualizar tarefa com ID ${id}:`, error);
@@ -101,17 +111,17 @@ export const taskRepository = {
   },
   // Deleta todas as tarefas marcadas como concluídas
  async deleteAllCompletedTasksByUser(userId: string): Promise<number> {
-  try {
-    const result = await prisma.tasks.deleteMany({
-      where: {
-        user_id: userId,
-        completed: true,
-      },
-    });
-    return result.count;
-  } catch (error) {
+    try {
+      const result = await prisma.tasks.deleteMany({
+        where: {
+          user_id: userId,
+          completed: true,
+        },
+      });
+      return result.count;
+    } catch (error) {
     console.error(`Erro ao deletar tarefas completas do usuário ${userId}:`, error);
     throw new Error("Erro ao deletar tarefas completas no banco de dados.");
-  }
-}
+    }
+  },
 };

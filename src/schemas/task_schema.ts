@@ -13,10 +13,6 @@ export const createTaskSchema = z
     user_id: z.string().uuid({ message: 'ID de usuário inválido' }),
     start_date: z.coerce.date({ required_error: 'Data de início é obrigatória' }),
     end_date: z.coerce.date({ required_error: 'Data de término é obrigatória' }),
-    status: z.enum(['TODO', 'IN_PROGRESS', 'DONE'], {
-    required_error: 'Status é obrigatório',
-    invalid_type_error: 'Status inválido',
-  })
 });
 
 // Schema para atualização de tarefa (todos os campos opcionais)

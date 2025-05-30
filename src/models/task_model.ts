@@ -1,5 +1,3 @@
-import { taskStatus } from "../generated/prisma";
-
 // Molde de dados que a função createTask precisa receber 
 export interface CreateTaskDTO {
     title: string;
@@ -8,7 +6,7 @@ export interface CreateTaskDTO {
     priority?: number;
     completed?: boolean;
     user_id: string;
-    status?: taskStatus;
+    
   }
 
 // Representa como uma terefa completa vem do banco de dados
@@ -16,7 +14,6 @@ export interface Tasks {
     id: string;
     title: string;
     description?: string | null;
-    status?: taskStatus;
     priority?: number | null;
     completed: boolean | null;
     start_date?: Date | null;

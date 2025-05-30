@@ -3,7 +3,6 @@ import { taskService } from '../services/crud_services';
 import { validateSchema } from '../utils/validate_schema';
 import { createTaskSchema, updateTaskSchema } from '../schemas/task_schema';
 import { AuthenticatedRequest } from '../middlewares/auth_middleware';
-import { taskStatus } from '../generated/prisma';
 
 export const todoController = {
   // Criação de uma nova tarefa
@@ -21,10 +20,7 @@ export const todoController = {
   if (!taskData) return;
 
   try {
-    const newTask = await taskService.createTask({
-      ...taskData,
-    status: taskData.status || taskStatus.TODO,
-  });
+    const newTask = await taskService.createTask(taskData);
     res.status(201).json(newTask);
   } catch (error: unknown) {
     if (error instanceof Error) {

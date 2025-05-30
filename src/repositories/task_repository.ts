@@ -1,18 +1,11 @@
 import prisma from '../utils/prisma_client';
 import { CreateTaskDTO, Tasks } from '../models/task_model';
-import { taskStatus } from '../generated/prisma';
-
 
 export const taskRepository = {
   // Cria uma nova tarefa no banco de dados
   async createTask(taskData: CreateTaskDTO): Promise<Tasks> {
     try {
-      return await prisma.tasks.create({ 
-        data: {
-          ... taskData, 
-          status: taskData.status || taskStatus.TODO,
-     },
-     });
+      return await prisma.tasks.create({ data: taskData });
     } catch (error) {
       console.error("Erro ao criar tarefa:", error);
       throw new Error("Erro ao criar tarefa no banco de dados.");
@@ -40,7 +33,7 @@ export const taskRepository = {
       orderBy: [
         { completed: 'asc' },
         { priority: 'desc' },
-        {  start_date: 'asc'  },
+        { start_date: 'asc' },
       ],
     });
   } catch (error) {
@@ -89,10 +82,7 @@ export const taskRepository = {
     try {
       return await prisma.tasks.update({
         where: { id },
-        data:{ 
-          ...taskData,
-        status: taskData.status || undefined,
-      },
+        data: taskData,
       });
     } catch (error) {
       console.error(`Erro ao atualizar tarefa com ID ${id}:`, error);

@@ -2,13 +2,14 @@ import prisma from '../utils/prisma_client';
 import bcrypt from 'bcryptjs';
 
 //cadastra um usuario 
-export const createUserDAO = async (name: string, email: string, password: string) => {
+export const createUserDAO = async (name: string, email: string, password: string, static_num: number ) => {
   const hashedPassword = await bcrypt.hash(password, 10); 
   return await prisma.users.create({
     data: {
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      static_num,
     }
   });
 };
@@ -16,7 +17,7 @@ export const createUserDAO = async (name: string, email: string, password: strin
 //atualiza um usuario
 export async function updateUserDAO(
   id: string,
-  data: { name?: string; email?: string; password?: string }
+  data: { name?: string; email?: string; password?: string, static_num?: number }
 ) {
 
   if (data.password) {

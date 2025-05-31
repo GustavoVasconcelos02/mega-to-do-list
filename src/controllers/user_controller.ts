@@ -3,10 +3,10 @@ import { createUserDAO, updateUserDAO, deleteUserDAO } from '../repositories/use
 import { generateUserToken } from '../utils/generate_token';
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, static_num  } = req.body;
 
   try {
-    const newUser = await createUserDAO(name, email, password);
+    const newUser = await createUserDAO(name, email, password, static_num );
     const token = generateUserToken(newUser);
     res.status(201).json(newUser);
     res.status(201).json({ token });
@@ -18,10 +18,10 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { name, email, password, static_num  } = req.body;
 
   try {
-    const updatedUser = await updateUserDAO(id, { name, email, password });
+    const updatedUser = await updateUserDAO(id, { name, email, password,static_num  });
     const token = generateUserToken(updatedUser);
     res.status(200).json(updatedUser);
     res.status(200).json({ token });

@@ -1,7 +1,7 @@
+import { generateUserToken } from '../utils/generate_token';
 import { Request, Response } from 'express';
 import prisma from '../utils/prisma_client';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 export const loginUser: (req: Request, res: Response) => Promise<void> = async (req, res) => {
   const { email, password } = req.body;
@@ -21,10 +21,7 @@ export const loginUser: (req: Request, res: Response) => Promise<void> = async (
       return;
     }
 
-    const token = jwt.sign({ name: user.name ,userId: user.id, email: user.email, static_num: user.static_num }, process.env.JWT_SECRET!, {
-      expiresIn: '1h',
-    });
-
+    const token = generateUserToken(user);
     res.json({ token });
   } catch (error) {
     console.error('Erro no login:', error);

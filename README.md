@@ -109,6 +109,7 @@ mega-to-do-list/
 │   │   └── crud_services.ts
 │   │
 │   ├── utils/                  # Utilitários auxiliares
+│   │   ├── generate_token.ts
 │   │   ├── prisma_client.ts
 │   │   └── validate_schema.ts
 │   │
